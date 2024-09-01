@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatApp</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <div class="user-list-container">
+        <h1>ChatApp</h1>
+        <ul>
+            <% if (users && users.length > 0) { %>
+                <% users.forEach(user => { %>
+                    <li><a href="/chat/<%= user._id %>"><%= user.username %></a></li>
+                <% }); %>
+            <% } else { %>
+                <li>No users found</li>
+            <% } %>
+        </ul>
+        <a href="/logout">Logout</a>
+    </div>
+</body>
+</html>
+
+
+

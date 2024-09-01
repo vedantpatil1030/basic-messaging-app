@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="./chat.css">
+</head>
+<style>
+  /* General Styles */
+  body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #e5ddd5;
+  }
+  
+  h1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      font-size: 1.5rem;
+      background-color: #075e54;
+      color: white;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 0;
+  }
+  
+  /* Chat Container */
+  .chat-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      overflow-y: scroll;
+      padding: 15px;
+      background-color: #dcf8c6;
+  }
+  
+  /* Message List */
+  #messages {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+  }
+  
+  .message {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      max-width: 60%;
+      word-wrap: break-word;
+      animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* Sent messages aligned to the right */
+  .message.sent {
+    background-color: #25d366; /* Green background */
+    color: white; /* White text for better contrast */
+    align-self: flex-end;
+    border-top-left-radius: 0;
+    margin-left: auto;
+}
+
+  /* Received messages aligned to the left */
+  .message.received {
+      background-color: white;
+      align-self: flex-start;
+      border-top-right-radius: 0;
+      margin-right: auto;
+  }
+  
+  /* Form */
+  #messageForm {
+      display: flex;
+      width: 100%;
+      margin-top: 10px;
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+  }
+  
+  #messageInput {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+  }
+  
+  #messageForm button {
+      background-color: #25d366;
+      color: rgb(250, 242, 242);
+      padding: 10px 15px;
+      border: none;
+      border-radius: 50%;
+      margin-left: 10px;
+      cursor: pointer;
+  }
+  
+  #messageForm button:hover {
+      background-color: #17ab4b;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+      from {
+          opacity: 0;
+          transform: translateY(20px);
+      }
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+</style>
+<body>
+  <h1>Chat with <%= receiverUsername %></h1>
+  <ul id="messages">
+      <% messages.forEach(message => { %>
+          <% if (message.sender._id === currentUser._id) { %>
+              <li class="message sent"><%= message.content %></li>
+          <% } else { %>
+              <li class="message received"><%= message.sender.username %>:</strong> <%= message.content %></li>
+          <% } %>
+      <% }); %>
+  </ul>
+  <form id="messageForm">
+      <input id="messageInput" type="text" placeholder="Type a message" required>
+      <button type="submit">Send</button>
+  </form>
+  <a href="/">Back to user list</a>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+    const socket = io();
+const currentUser = '<%= currentUser %>';
+const receiverId = '<%= receiverId %>';
+
+socket.emit('join room', { currentUser, receiver: receiverId });
+
+const form = document.getElementById('messageForm');
+const input = document.getElementById('messageInput');
+const messages = document.getElementById('messages');
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const message = {
+        sender: currentUser,
+        receiver: receiverId,
+        content: input.value
+    };
+
+    // Emit the message to the server
+    socket.emit('chat message', message);
+
+    // Clear input field after sending
+    input.value = '';
+});
+
+// Listen for incoming messages from the server
+socket.on('chat message', (data) => {
+    const item = document.createElement('li');
+    // If the message is sent by the current user, display it on the right side
+    if (data.sender === currentUser) {
+        item.classList.add('message', 'sent');
+        item.innerHTML = data.content;
+    } else {
+        // Display the message on the receiver's side
+        item.classList.add('message', 'received');
+        item.innerHTML = '<strong>' + data.sender + ':</strong> ' + data.content;
+    }
+    messages.appendChild(item);
+    messages.scrollTop = messages.scrollHeight;
+});
+
+  </script>
+  
+</body>
+</html>
+
+
+
+
+
+
+
+

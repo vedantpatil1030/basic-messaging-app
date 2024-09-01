@@ -1,0 +1,98 @@
+/* General Styles */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2; /* Light gray background */
+  }
+  
+  h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    font-size: 1.5rem;
+    background-color: #fff; /* White header background */
+    border-bottom: 1px solid #ddd; /* Light gray border */
+    margin-bottom: 0;
+  }
+  
+  /* Chat Container */
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: scroll; /* Enable scrolling for long chats */
+    padding: 15px;
+  }
+  
+  /* Message List */
+  #messages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .message {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 5px;
+  }
+  
+  .message.sent {
+    background-color: #e0f2f1; /* Light blue background for sent messages */
+    border-top-left-radius: 0; /* Rounded corner for sent messages */
+  }
+  
+  .message.received {
+    background-color: #fff; /* White background for received messages */
+    border-top-right-radius: 0; /* Rounded corner for received messages */
+  }
+  
+  /* Message Sender and Content */
+  .message-sender {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  
+  .message-content {
+    flex-grow: 1;
+  }
+  
+  /* Form */
+  #messageForm {
+    display: flex;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  #messageInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  #messageForm button {
+    background-color: #25D366; /* Green button color */
+    color: #fff; /* White text color */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Additional Styling (inspired by the image) */
+  .chat-container {
+    border-left: 1px solid #ddd; /* Chat container left border */
+  }
+  
+  h1 {
+    color: #000; /* Black text color for header */
+  }
+  
+  #messageForm button:hover {
+    background-color: #17AB4B; /* Darker green on hover */
+  }
